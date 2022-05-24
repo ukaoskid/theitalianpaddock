@@ -130,3 +130,9 @@ dmypy.json
 
 # cache
 cache/
+
+# images
+*.png
+
+# macOS
+.DS_Store
