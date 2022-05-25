@@ -3,6 +3,10 @@ Using FastF1
 
 # How to use
 
+## Install dependencies
+
+`pip install fastf1`
+
 ## Available metrics
 - Speed
 - Throttle
