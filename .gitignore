@@ -134,5 +134,6 @@ cache/
 # images
 *.png
 
-# macOS
+# macOS and IDE
 .DS_Store
+.idea

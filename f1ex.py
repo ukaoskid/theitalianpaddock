@@ -1,4 +1,5 @@
 import sys
+import f1plotting
 import fastf1 as ff1
 from fastf1 import plotting
 from fastf1 import utils
@@ -13,24 +14,35 @@ year = int(sys.argv[1])
 track = int(sys.argv[2])
 session = sys.argv[3]
 drivers = sys.argv[4].split(",")
-metrics = sys.argv[5].split(",")
+metrics = sys.argv[5].split(",") # Speed, Throttle, Brake, nGear, RPM, DRS
 
 laps = []
+laps_telemetry = []
 fastest_laps = []
-telemetry = []
+fastest_laps_telemetry = []
 
 ff1.Cache.enable_cache('cache')
 
 data = ff1.get_session(year, track, session)
 data.load()
 
-# Laps, Telemetry
+# Laps
 for driver in drivers:
     laps.append(data.laps.pick_driver(driver))
-    telemetry.append(laps[len(laps)].pick_fastest())
+    fastest_laps.append(laps[len(laps) - 1].pick_fastest())
 
-# Extract the delta time
-delta_time_1, ref_tel_1, compare_tel_1 = utils.delta_time(drivers[0], drivers[1])
-delta_time_2, ref_tel_2, compare_tel_2 = utils.delta_time(drivers[2], drivers[3])
+# Telemetry
+for lap in laps:
+    laps_telemetry.append(lap.get_telemetry().add_distance())
+for fastest_lap in fastest_laps:
+    fastest_laps_telemetry.append(fastest_lap.get_telemetry().add_distance())
 
-print(delta_time_1)
+if session == "Q":
+    f1plotting.plot_quali(
+        drivers,
+        event=data.event,
+        fastest_laps=fastest_laps,
+        fastest_laps_telemetry=fastest_laps_telemetry,
+        metrics=metrics)
+else:
+    f1plotting.plot_race(drivers, event=data.event, laps=laps)
