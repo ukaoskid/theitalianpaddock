@@ -17,7 +17,7 @@ Using FastF1
 
 ## Qualifying
 ```bash
-python3 f1ex [YEAR] [ROUND] Q 3 [DRIVER 3 letter comma separated no spaces] [METRICS comma separated no spaces]
+python3 f1ex.py [YEAR] [ROUND] Q 3 [DRIVER 3 letter comma separated no spaces] [METRICS comma separated no spaces]
 
 # 2022 Spanish GP
 python3 f1ex.py 2022 6 Q LEC,VER,SAI Speed,Throttle,Brake,nGear,RPM,DRS
