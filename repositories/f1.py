@@ -10,15 +10,16 @@ def get_session(request: DataRequest) -> F1Repository:
     data = fastf1.get_session(request.year, request.track, request.session)
     data.load()
 
-    # Laps
+    # Laps - considering only accurate data
     for driver in request.drivers:
-        f1_repository.laps.append(data.laps.pick_driver(driver))
+        current_laps = data.laps.pick_driver(driver)
+        f1_repository.laps.append(current_laps[current_laps['IsAccurate'] == True])
         f1_repository.fastest_laps.append(f1_repository.laps[len(f1_repository.laps) - 1].pick_fastest())
 
     # Telemetry
     for lap in f1_repository.laps:
-        f1_repository.laps_telemetry.append(lap.get_telemetry().add_distance())
+        f1_repository.laps_telemetry.append(lap.get_car_data().add_distance())
     for fastest_lap in f1_repository.fastest_laps:
-        f1_repository.fastest_laps_telemetry.append(fastest_lap.get_telemetry().add_distance())
+        f1_repository.fastest_laps_telemetry.append(fastest_lap.get_car_data().add_distance())
 
     return f1_repository

@@ -1,6 +1,8 @@
+import json
+
 from f1_types import DataRequest
 from repositories.f1 import get_session
-from urllib import parse
+from services.chartify import fastest_laps
 from flask import Blueprint, request, Response
 
 data_controller = Blueprint('data_controller', __name__)
@@ -18,7 +20,6 @@ def data():
                            request.args.get('metrics').split(','))
 
     session_data = get_session(body)
-    # return Response(response=session_data.laps[1].to_json(),
-    #                 status=200,
-    #                 mimetype='application/json')
-    return session_data.laps[1].to_csv()
+    return Response(response=json.dumps(fastest_laps(body.drivers, session_data)),
+                    status=200,
+                    mimetype='application/json')
