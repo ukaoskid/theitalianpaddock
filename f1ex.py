@@ -37,5 +37,11 @@ if session == "Q":
         fastest_laps=fastest_laps,
         fastest_laps_telemetry=fastest_laps_telemetry,
         metrics=metrics)
+elif session == "FP1":
+    f1plotting.plot_race(drivers, event=data.event, laps=laps, session_name="FP1")
+elif session == "FP2":
+    f1plotting.plot_race(drivers, event=data.event, laps=laps, session_name="FP2")
+elif session == "FP3":
+    f1plotting.plot_race(drivers, event=data.event, laps=laps, session_name="FP3")
 else:
-    f1plotting.plot_race(drivers, event=data.event, laps=laps)
+    f1plotting.plot_race(drivers, event=data.event, laps=laps, session_name="Race")

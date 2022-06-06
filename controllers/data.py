@@ -12,6 +12,7 @@ data_controller = Blueprint('data_controller', __name__)
 def data():
     if request.method == 'POST':
         body = DataRequest(**request.get_json())
+        print(body)
     if request.method == 'GET':
         body = DataRequest(int(request.args.get('year')),
                            int(request.args.get('track')),

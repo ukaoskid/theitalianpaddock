@@ -57,14 +57,14 @@ def plot_quali(drivers, event, fastest_laps, fastest_laps_telemetry, metrics):
         a.label_outer()
 
     # Store figure
-    plt.savefig(plot_filename, dpi=300)
+    plt.savefig(plot_filename, dpi=600)
 
 
-def plot_race(drivers, event, laps):
+def plot_race(drivers, event, laps, session_name):
     # Event name
     plotting.setup_mpl()
 
-    event_name = f"{event.year} {event.EventName} - Race - {', '.join(drivers)}"
+    event_name = f"{event.year} {event.EventName} - {session_name} - {', '.join(drivers)}"
     plot_filename = event_name.replace(" ", "") + ".png"
 
     fig, ax = plt.subplots()
@@ -76,4 +76,4 @@ def plot_race(drivers, event, laps):
         ax.plot(laps[i]['LapNumber'], laps[i]['LapTime'], color=COLORS[i])
 
     # Store figure
-    plt.savefig(plot_filename, dpi=300)
+    plt.savefig(plot_filename, dpi=600)
