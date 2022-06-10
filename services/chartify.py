@@ -34,6 +34,7 @@ def laps(drivers: list[str], data: F1Repository):
     for i in range(len(drivers)):
         chart_data = []
         for j in range(len(data.laps[i])):
+            print(data.laps[i].columns)
             chart_data.append({
                 "time": int(data.laps[i].iloc[j]['LapTime'].total_seconds() * 1e3),
                 "lap": round(int(data.laps[i].iloc[j]['LapNumber'])),
@@ -46,3 +47,14 @@ def laps(drivers: list[str], data: F1Repository):
 
     return chart
 
+
+def layout(drivers: list[str], data: F1Repository):
+    chart = {"chart": 'LAYOUT', "data": []}
+    for i in range(len(drivers)):
+        chart_data = []
+        for j in range(len(data.laps_telemetry[i])):
+            # print(data.laps_telemetry[i].columns)
+            chart_data.append({})
+        chart['data'].append({"driver": drivers[i], "color": COLORS[i], "data": chart_data})
+
+    return chart

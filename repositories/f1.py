@@ -18,7 +18,7 @@ def get_session(request: DataRequest) -> F1Repository:
 
     # Telemetry
     for lap in f1_repository.laps:
-        f1_repository.laps_telemetry.append(lap.get_car_data().add_distance())
+        f1_repository.laps_telemetry.append(lap.get_telemetry().add_distance())
     for fastest_lap in f1_repository.fastest_laps:
         f1_repository.fastest_laps_telemetry.append(fastest_lap.get_car_data().add_distance())
 
