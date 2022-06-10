@@ -3,16 +3,18 @@ from constants import CHARTS, COLORS
 from normalizers import normalize
 
 
-def fastest_laps(drivers: list[str], data: F1Repository):
-    chart = {"chart": CHARTS['Q_FASTLAPS'], "data": []}
+def fastest_laps(drivers: list[str], metrics: list[str], data: F1Repository):
+    chart = {"chart": 'FASTLAPS', "data": []}
     lengths = []
     for i in range(len(drivers)):
         chart_data = []
         for j in range(len(data.fastest_laps_telemetry[i])):
-            chart_data.append({
-                "speed": int(data.fastest_laps_telemetry[i].iloc[j]['Speed']),
-                "distance": round(int(data.fastest_laps_telemetry[i].iloc[j]['Distance']))
-            })
+            telemetry_metric = {}
+            for metric in metrics:
+                telemetry_metric[metric.lower()] = int(data.fastest_laps_telemetry[i].iloc[j][metric])
+            telemetry_metric['distance'] = round(int(data.fastest_laps_telemetry[i].iloc[j]['Distance']))
+            chart_data.append(telemetry_metric)
+
         # normalize distance
         normalized_data = normalize(chart_data, 'distance')
         chart['data'].append({"driver": drivers[i], "color": COLORS[i], "data": normalized_data})
@@ -25,3 +27,22 @@ def fastest_laps(drivers: list[str], data: F1Repository):
             chart['data'][i]['data'] = chart['data'][i]['data'][:len(chart['data'][i]['data']) - (len(chart['data'][i]['data']) - shortest)]
 
     return chart
+
+
+def laps(drivers: list[str], data: F1Repository):
+    chart = {"chart": 'LAPSTIME', "data": []}
+    for i in range(len(drivers)):
+        chart_data = []
+        for j in range(len(data.laps[i])):
+            chart_data.append({
+                "time": int(data.laps[i].iloc[j]['LapTime'].total_seconds() * 1e3),
+                "lap": round(int(data.laps[i].iloc[j]['LapNumber'])),
+                "s1": int(data.laps[i].iloc[j]['Sector1Time'].total_seconds() * 1e3),
+                "s2": int(data.laps[i].iloc[j]['Sector2Time'].total_seconds() * 1e3),
+                "s3": int(data.laps[i].iloc[j]['Sector3Time'].total_seconds() * 1e3),
+                "compound": str(data.laps[i].iloc[j]['Compound'])
+            })
+        chart['data'].append({"driver": drivers[i], "color": COLORS[i], "data": chart_data})
+
+    return chart
+

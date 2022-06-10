@@ -8,4 +8,4 @@ CORS(app)
 
 # Registering routes
 app.register_blueprint(data_controller)
-app.run()
+app.run(host='0.0.0.0', port=5588)

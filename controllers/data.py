@@ -2,7 +2,7 @@ import json
 
 from f1_types import DataRequest
 from repositories.f1 import get_session
-from services.chartify import fastest_laps
+from services.chartify import fastest_laps, laps
 from flask import Blueprint, request, Response
 
 data_controller = Blueprint('data_controller', __name__)
@@ -12,7 +12,6 @@ data_controller = Blueprint('data_controller', __name__)
 def data():
     if request.method == 'POST':
         body = DataRequest(**request.get_json())
-        print(body)
     if request.method == 'GET':
         body = DataRequest(int(request.args.get('year')),
                            int(request.args.get('track')),
@@ -21,6 +20,9 @@ def data():
                            request.args.get('metrics').split(','))
 
     session_data = get_session(body)
-    return Response(response=json.dumps(fastest_laps(body.drivers, session_data)),
-                    status=200,
-                    mimetype='application/json')
+    response = [
+        fastest_laps(body.drivers, body.metrics, session_data),
+        laps(body.drivers, session_data)
+    ]
+
+    return Response(response=json.dumps(response), status=200, mimetype='application/json')
