@@ -12,8 +12,8 @@ def get_session(request: DataRequest) -> F1Repository:
 
     # Laps - considering only accurate data
     for driver in request.drivers:
-        current_laps = data.laps.pick_driver(driver)
-        f1_repository.laps.append(current_laps[current_laps['IsAccurate'] == True])
+        current_laps = data.laps.pick_accurate().pick_driver(driver)
+        f1_repository.laps.append(current_laps.iloc[1:, :])  # Remove first lap (outlier)
         f1_repository.fastest_laps.append(f1_repository.laps[len(f1_repository.laps) - 1].pick_fastest())
 
     # Telemetry

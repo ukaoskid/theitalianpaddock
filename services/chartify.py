@@ -34,7 +34,7 @@ def laps(drivers: list[str], data: F1Repository):
     for i in range(len(drivers)):
         chart_data = []
         for j in range(len(data.laps[i])):
-            print(data.laps[i].columns)
+            # print(data.laps[i].columns)
             chart_data.append({
                 "time": int(data.laps[i].iloc[j]['LapTime'].total_seconds() * 1e3),
                 "lap": round(int(data.laps[i].iloc[j]['LapNumber'])),

@@ -23,3 +23,4 @@ def normalize(data: [], field: str):
 
     return remove_every_nth(normalized_list, 2)
 
+
