@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 
 
 def plot_quali(drivers, event, fastest_laps, fastest_laps_telemetry, metrics):
+    print(fastest_laps_telemetry[1])
     # 1 = delta time, 2 = ref telemetry
     delta_times = []
     real_len = len(fastest_laps) - 1
@@ -39,7 +40,7 @@ def plot_quali(drivers, event, fastest_laps, fastest_laps_telemetry, metrics):
     ax[plot_counter].title.set_text(event_name)
 
     for delta_time in delta_times:
-        ax[plot_counter].plot(delta_time[1]['Distance'], delta_time[0])
+        ax[plot_counter].plot(fastest_laps_telemetry[1]['Distance'], fastest_laps_telemetry[1]['DistanceToDriverAhead'])
         ax[plot_counter].axhline(0)
         # ax[plot_counter].set(ylabel=f"1 VS 2 (s)")
         plot_counter = plot_counter + 1

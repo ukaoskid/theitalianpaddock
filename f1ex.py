@@ -15,20 +15,23 @@ fastest_laps_telemetry = []
 
 ff1.Cache.enable_cache('cache')
 
-data = ff1.get_session(year, track, session)
+data = ff1.get_session(year, track, "R")
 data.load()
 
 # Laps - considering only accurate data
 for driver in drivers:
     current_laps = data.laps.pick_driver(driver)
-    laps.append(current_laps[current_laps['IsAccurate'] == True])
-    fastest_laps.append(laps[len(laps) - 1].pick_fastest())
+    laps.append(current_laps)
+    latest_laps = laps[len(laps) - 1]
+    specific_lap = latest_laps[latest_laps['LapNumber'] == 39].iloc[0]
+    fastest_laps.append(specific_lap)
+
 
 # Telemetry
 for lap in laps:
     laps_telemetry.append(lap.get_telemetry().add_distance())
 for fastest_lap in fastest_laps:
-    fastest_laps_telemetry.append(fastest_lap.get_telemetry().add_distance())
+    fastest_laps_telemetry.append(fastest_lap.get_telemetry().add_distance().add_differential_distance())
 
 if session == "Q":
     f1plotting.plot_quali(
