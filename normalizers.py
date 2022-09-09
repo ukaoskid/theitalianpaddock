@@ -21,6 +21,6 @@ def normalize(data: [], field: str):
             last_useful_data[field] = cursor[field]
             normalized_list.append(copy.deepcopy(last_useful_data))
 
-    return remove_every_nth(normalized_list, 2)
+    return normalized_list
 
 

@@ -16,7 +16,7 @@ def fastest_laps(drivers: list[str], metrics: list[str], data: F1Repository):
             chart_data.append(telemetry_metric)
 
         # normalize distance
-        normalized_data = normalize(chart_data, 'distance')
+        normalized_data = chart_data #normalize(chart_data, 'distance')
         chart['data'].append({"driver": drivers[i], "color": COLORS[i], "data": normalized_data})
         lengths.append(len(normalized_data))
 
