@@ -1,6 +1,12 @@
+import pandas as pd
+
 from f1_types import F1Repository
 from constants import CHARTS, COLORS
 from normalizers import normalize
+from scipy.interpolate import interp1d
+import numpy as np
+import pandas as ps
+import json
 
 
 def fastest_laps(drivers: list[str], metrics: list[str], data: F1Repository):
@@ -16,8 +22,11 @@ def fastest_laps(drivers: list[str], metrics: list[str], data: F1Repository):
             chart_data.append(telemetry_metric)
 
         # normalize distance
-        normalized_data = chart_data #normalize(chart_data, 'distance')
-        chart['data'].append({"driver": drivers[i], "color": COLORS[i], "data": normalized_data})
+        normalized_data = normalize(chart_data, 'distance')
+        normalized_df = pd.read_json(json.dumps(normalized_data))
+        interpolated_df = normalized_df.interpolate(method="cubic")
+
+        chart['data'].append({"driver": drivers[i], "color": COLORS[i], "data": json.loads(interpolated_df.to_json(orient='records'))})
         lengths.append(len(normalized_data))
 
     # align lengths

@@ -1,4 +1,5 @@
 import copy
+import scipy.interpolate as interp
 
 
 def remove_every_nth(lst, n):
@@ -16,6 +17,7 @@ def normalize(data: [], field: str):
         existing_data = next((x for x in data if x[field] == cursor[field]), None)
         if existing_data is not None:
             last_useful_data = copy.deepcopy(existing_data)
+            last_useful_data['speed'] = None
             normalized_list.append(existing_data)
         else:
             last_useful_data[field] = cursor[field]
@@ -24,3 +26,6 @@ def normalize(data: [], field: str):
     return normalized_list
 
 
+def interpolate(data: [], field: str):
+    full_field_set = list(set(range(data[-1][field] + 1)))
+    print(field, full_field_set)
